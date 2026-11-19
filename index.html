@@ -440,9 +440,14 @@
                     id="rsvpForm" 
                     action="https://docs.google.com/forms/d/e/1FAIpQLScjqdzPG7NOwQnF3Ysv8Vk6fwZmpkMbNs-B6uSPE_e_YKFWgw/formResponse" 
                     method="POST" 
+                    enctype="application/x-www-form-urlencoded"
                     target="hidden_rsvp_iframe"
                     class="space-y-6"
                 >
+                    <!-- Google 表單標準隱藏參數，確保跨域 Iframe 提交不被伺服器忽略 -->
+                    <input type="hidden" name="fvv" value="1">
+                    <input type="hidden" name="pageHistory" value="0">
+
                     <!-- 1. 姓名 NAME (entry.138301856) - 嚴格保持空白 -->
                     <div>
                         <label for="entry_name" class="block text-sm font-medium text-morandi-charcoal mb-2">
@@ -552,9 +557,10 @@
                                 <select 
                                     id="entry_diet" 
                                     name="entry.732568633"
+                                    disabled
                                     class="w-full px-4 py-3 rounded-xl bg-white border border-morandi-stone focus:border-morandi-sand focus:outline-none transition-colors text-morandi-charcoal text-sm sm:text-base appearance-none"
                                 >
-                                    <option value="" selected>請選擇飲食習慣</option>
+                                    <option value="" disabled selected>請選擇飲食習慣</option>
                                     <option value="葷食">葷食</option>
                                     <option value="素">素</option>
                                     <option value="蛋奶素">蛋奶素</option>
@@ -575,9 +581,10 @@
                                 <select 
                                     id="entry_chair" 
                                     name="entry.1438730250"
+                                    disabled
                                     class="w-full px-4 py-3 rounded-xl bg-white border border-morandi-stone focus:border-morandi-sand focus:outline-none transition-colors text-morandi-charcoal text-sm sm:text-base appearance-none"
                                 >
-                                    <option value="" selected>請選擇是否需要</option>
+                                    <option value="" disabled selected>請選擇是否需要</option>
                                     <option value="不需要">不需要</option>
                                     <option value="需要">需要</option>
                                 </select>
@@ -622,6 +629,7 @@
                             type="text" 
                             id="entry_address" 
                             name="entry.1289570779" 
+                            disabled
                             placeholder="請輸入郵遞區號與完整收件地址"
                             class="w-full px-4 py-3 rounded-xl bg-morandi-cream/70 border border-morandi-stone focus:border-morandi-sand focus:bg-white focus:outline-none transition-colors text-morandi-charcoal text-sm sm:text-base"
                         >
@@ -760,9 +768,18 @@
 
             if (!isNaN(count) && count > 0) {
                 extraFields.classList.remove('hidden');
+                // 啟用欄位並設為必填，確保送出有效選項
+                dietSelect.disabled = false;
+                chairSelect.disabled = false;
+                dietSelect.setAttribute('required', 'required');
+                chairSelect.setAttribute('required', 'required');
             } else {
                 extraFields.classList.add('hidden');
-                // 隱藏時清空值避免誤送
+                // 停用 (disabled) 欄位，讓表單完全不傳送空字串給 Google 單選題，避免退件
+                dietSelect.disabled = true;
+                chairSelect.disabled = true;
+                dietSelect.removeAttribute('required');
+                chairSelect.removeAttribute('required');
                 dietSelect.value = '';
                 chairSelect.value = '';
             }
@@ -776,9 +793,11 @@
 
             if (inviteSelect.value.includes('需要，希望收到紙本喜帖')) {
                 addressField.classList.remove('hidden');
+                addressInput.disabled = false;
                 addressInput.setAttribute('required', 'required');
             } else {
                 addressField.classList.add('hidden');
+                addressInput.disabled = true;
                 addressInput.removeAttribute('required');
                 addressInput.value = '';
             }
