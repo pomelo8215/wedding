@@ -445,6 +445,7 @@
                     <!-- Google 表單標準隱藏參數，確保提交格式完整 -->
                     <input type="hidden" name="fvv" value="1">
                     <input type="hidden" name="pageHistory" value="0">
+                    <input type="hidden" name="fbzx" value="0">
 
                     <!-- 1. 姓名 NAME (entry.138301856) - 嚴格保持空白 -->
                     <div>
@@ -648,7 +649,7 @@
                     </div>
 
                     <!-- 送出按鈕 -->
-                    <div class="pt-3">
+                    <div class="pt-3 space-y-3">
                         <button 
                             type="submit" 
                             id="submitBtn"
@@ -657,6 +658,17 @@
                             <span>送出出席回函</span>
                             <span class="font-serifEn text-sm tracking-wider opacity-90">SUBMIT RSVP</span>
                         </button>
+
+                        <!-- 除錯輔助連結：若後台仍未收到，可點此帶入目前欄位值開啟 Google 表單官方頁面查看原因 -->
+                        <div class="text-center">
+                            <button 
+                                type="button" 
+                                onclick="openGoogleFormPrefillCheck()" 
+                                class="text-xs text-morandi-muted hover:text-morandi-charcoal underline underline-offset-4 transition-colors"
+                            >
+                                仍未收到回覆？點此以目前填寫內容開啟 Google 表單檢視
+                            </button>
+                        </div>
                     </div>
                     <p id="rsvpStatusHint" class="hidden text-center text-xs text-red-500 pt-1"></p>
                 </form>
@@ -836,6 +848,11 @@
                     }
                 });
 
+                // 同時附帶 Google 表單常用的 draftResponse 參數
+                if (!payload.has('draftResponse')) {
+                    payload.append('draftResponse', '[null,null,"0"]');
+                }
+
                 await fetch(rsvpForm.action, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -858,6 +875,28 @@
                 submitBtn.innerHTML = '<span>送出出席回函</span><span class="font-serifEn text-sm tracking-wider opacity-90">SUBMIT RSVP</span>';
             }
         });
+
+        // 除錯輔助：將目前啟用欄位轉為 Google 表單預填網址並開啟，方便確認欄位與選項是否完全符合
+        function openGoogleFormPrefillCheck() {
+            try {
+                const params = new URLSearchParams();
+                params.append('usp', 'pp_url');
+
+                const elements = rsvpForm.querySelectorAll('input[name^="entry."], select[name^="entry."], textarea[name^="entry."]');
+                elements.forEach((el) => {
+                    if (el.disabled || !el.name || el.value === '') return;
+                    params.append(el.name, el.value);
+                });
+
+                const viewFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScjqdzPG7NOwQnF3Ysv8Vk6fwZmpkMbNs-B6uSPE_e_YKFWgw/viewform?' + params.toString();
+                window.open(viewFormUrl, '_blank', 'noopener,noreferrer');
+            } catch (e) {
+                if (statusHint) {
+                    statusHint.textContent = '無法開啟檢視視窗，請檢查瀏覽器彈出視窗設定。';
+                    statusHint.classList.remove('hidden');
+                }
+            }
+        }
 
         function resetRsvpForm() {
             rsvpForm.reset();
