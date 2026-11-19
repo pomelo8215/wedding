@@ -440,11 +440,9 @@
                     id="rsvpForm" 
                     action="https://docs.google.com/forms/d/e/1FAIpQLScjqdzPG7NOwQnF3Ysv8Vk6fwZmpkMbNs-B6uSPE_e_YKFWgw/formResponse" 
                     method="POST" 
-                    enctype="application/x-www-form-urlencoded"
-                    target="hidden_rsvp_iframe"
                     class="space-y-6"
                 >
-                    <!-- Google 表單標準隱藏參數，確保跨域 Iframe 提交不被伺服器忽略 -->
+                    <!-- Google 表單標準隱藏參數，確保提交格式完整 -->
                     <input type="hidden" name="fvv" value="1">
                     <input type="hidden" name="pageHistory" value="0">
 
@@ -660,6 +658,7 @@
                             <span class="font-serifEn text-sm tracking-wider opacity-90">SUBMIT RSVP</span>
                         </button>
                     </div>
+                    <p id="rsvpStatusHint" class="hidden text-center text-xs text-red-500 pt-1"></p>
                 </form>
 
                 <!-- 提交成功訊息框 (取代 alert) -->
@@ -773,54 +772,54 @@
                 chairSelect.disabled = false;
                 dietSelect.setAttribute('required', 'required');
                 chairSelect.setAttribute('required', 'required');
-            } else {
-                extraFields.classList.add('hidden');
-                // 停用 (disabled) 欄位，讓表單完全不傳送空字串給 Google 單選題，避免退件
-                dietSelect.disabled = true;
-                chairSelect.disabled = true;
-                dietSelect.removeAttribute('required');
-                chairSelect.removeAttribute('required');
-                dietSelect.value = '';
-                chairSelect.value = '';
-            }
-        }
-
-        // 4. 智能表單邏輯 B：紙本喜帖選擇「需要」時才顯示「紙本喜帖寄件地址」
-        function handleInvitationLogic() {
-            const inviteSelect = document.getElementById('entry_invitation');
-            const addressField = document.getElementById('address-extra-field');
-            const addressInput = document.getElementById('entry_address');
-
-            if (inviteSelect.value.includes('需要，希望收到紙本喜帖')) {
-                addressField.classList.remove('hidden');
-                addressInput.disabled = false;
-                addressInput.setAttribute('required', 'required');
-            } else {
-                addressField.classList.add('hidden');
-                addressInput.disabled = true;
-                addressInput.removeAttribute('required');
-                addressInput.value = '';
-            }
-        }
-
-        // 5. 隱藏式 Iframe 表單送出處理 (無需跳轉離開頁面，顯示高質感成功卡片)
+        // 5. 表單送出處理 (使用 fetch no-cors 傳送 URLSearchParams 至 Google Form，避免 iframe 阻擋)
         let isSubmitting = false;
         const rsvpForm = document.getElementById('rsvpForm');
-        const hiddenIframe = document.getElementById('hidden_rsvp_iframe');
         const successBox = document.getElementById('rsvpSuccessBox');
         const submitBtn = document.getElementById('submitBtn');
+        const statusHint = document.getElementById('rsvpStatusHint');
 
-        rsvpForm.addEventListener('submit', function() {
+        rsvpForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            if (isSubmitting) return;
+
             isSubmitting = true;
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span>資料傳送中...</span>';
-        });
+            if (statusHint) {
+                statusHint.classList.add('hidden');
+                statusHint.textContent = '';
+            }
 
-        hiddenIframe.addEventListener('load', function() {
-            if (isSubmitting) {
-                isSubmitting = false;
+            try {
+                // 只收集未停用 (enabled) 且有值的欄位，避免傳送空字串給單選/下拉題
+                const payload = new URLSearchParams();
+                const elements = rsvpForm.querySelectorAll('input[name], select[name], textarea[name]');
+                elements.forEach((el) => {
+                    if (el.disabled || !el.name) return;
+                    if (el.value !== '') {
+                        payload.append(el.name, el.value);
+                    }
+                });
+
+                await fetch(rsvpForm.action, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: payload.toString()
+                });
+
                 rsvpForm.classList.add('hidden');
                 successBox.classList.remove('hidden');
+            } catch (err) {
+                if (statusHint) {
+                    statusHint.textContent = '傳送時發生網路異常，請稍後再試一次。';
+                    statusHint.classList.remove('hidden');
+                }
+            } finally {
+                isSubmitting = false;
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<span>送出出席回函</span><span class="font-serifEn text-sm tracking-wider opacity-90">SUBMIT RSVP</span>';
             }
