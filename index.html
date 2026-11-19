@@ -772,6 +772,40 @@
                 chairSelect.disabled = false;
                 dietSelect.setAttribute('required', 'required');
                 chairSelect.setAttribute('required', 'required');
+            } else {
+                extraFields.classList.add('hidden');
+                // 停用並清空欄位，避免送出空字串給單選/下拉題
+                dietSelect.disabled = true;
+                chairSelect.disabled = true;
+                dietSelect.removeAttribute('required');
+                chairSelect.removeAttribute('required');
+                dietSelect.value = '';
+                chairSelect.value = '';
+            }
+        }
+
+        // 4. 智能表單邏輯 B：選擇需要紙本喜帖時顯示「紙本喜帖寄件地址」
+        function handleInvitationLogic() {
+            const invitationSelect = document.getElementById('entry_invitation');
+            const addressField = document.getElementById('address-extra-field');
+            const addressInput = document.getElementById('entry_address');
+
+            if (!invitationSelect || !addressField || !addressInput) return;
+
+            const needsPaper = invitationSelect.value.startsWith('需要');
+
+            if (needsPaper) {
+                addressField.classList.remove('hidden');
+                addressInput.disabled = false;
+                addressInput.setAttribute('required', 'required');
+            } else {
+                addressField.classList.add('hidden');
+                addressInput.disabled = true;
+                addressInput.removeAttribute('required');
+                addressInput.value = '';
+            }
+        }
+
         // 5. 表單送出處理 (使用 fetch no-cors 傳送 URLSearchParams 至 Google Form，避免 iframe 阻擋)
         let isSubmitting = false;
         const rsvpForm = document.getElementById('rsvpForm');
