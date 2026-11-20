@@ -22,6 +22,7 @@
       --shadow-soft: 0 14px 36px rgba(60, 56, 52, 0.08);
     }
 
+    /* 修正：將原本誤寫的 '-' 改為萬用選取器 '*' */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -89,6 +90,7 @@
       display: flex;
       gap: 1.5rem;
       list-style: none;
+      align-items: center;
     }
 
     .nav-links a {
@@ -126,6 +128,7 @@
       position: relative;
       width: 100%;
       height: 100vh;
+      height: 100svh;
       min-height: 620px;
       background-image: url('https://i.postimg.cc/cCx5NqgQ/IMG-117.jpg');
       background-size: cover;
@@ -150,6 +153,17 @@
         rgba(28, 24, 21, 0.82) 100%
       );
       pointer-events: none;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .hero-content {
@@ -255,6 +269,13 @@
       margin: 0 auto;
     }
 
+    @media (max-width: 540px) {
+      .countdown-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
+      }
+    }
+
     .countdown-card {
       background: linear-gradient(145deg, #ffffff 0%, #fcfaf6 100%);
       border: 1px solid rgba(212, 163, 115, 0.24);
@@ -286,6 +307,7 @@
       font-weight: 600;
       color: var(--sun-terracotta-dark);
       line-height: 1.1;
+      font-variant-numeric: tabular-nums;
     }
 
     .countdown-hairline {
@@ -420,5 +442,784 @@
       background: rgba(141, 163, 153, 0.08);
     }
 
+    /* 補齊摺疊面板圖示與展開動畫樣式 */
     .accordion-icon {
       width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--morandi-sage-dark);
+      transition: transform 0.35s ease;
+      flex-shrink: 0;
+    }
+
+    .accordion-item.is-open .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .accordion-item.is-open .accordion-panel {
+      grid-template-rows: 1fr;
+    }
+
+    .accordion-panel-inner {
+      overflow: hidden;
+    }
+
+    .accordion-body {
+      padding: 0 1.4rem 1.35rem;
+      border-top: 1px solid rgba(141, 163, 153, 0.18);
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.9;
+    }
+
+    .accordion-body p {
+      margin-top: 0.85rem;
+    }
+
+    .accordion-body strong {
+      color: var(--text-ink);
+      font-weight: 600;
+    }
+
+    /* 4. RSVP 出席回函表單樣式 */
+    #rsvp {
+      background-color: var(--bg-cream);
+    }
+
+    .rsvp-card {
+      background: var(--card-white);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+    }
+
+    @media (max-width: 540px) {
+      .rsvp-card {
+        padding: 2rem 1.35rem;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.45rem;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.15rem;
+      margin-bottom: 1.45rem;
+    }
+
+    @media (max-width: 580px) {
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.93rem;
+      font-weight: 500;
+      color: var(--text-ink);
+      margin-bottom: 0.45rem;
+      letter-spacing: 0.05em;
+    }
+
+    .form-label .en-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      color: var(--sun-terracotta-dark);
+      text-transform: uppercase;
+      margin-left: 0.35rem;
+    }
+
+    .req-star {
+      color: #c86d51;
+      margin-left: 0.2rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.78rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(118, 111, 104, 0.26);
+      background-color: #fcfaf7;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.95rem;
+      color: var(--text-ink);
+      transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--sun-terracotta);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.16);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 96px;
+    }
+
+    .conditional-box {
+      background-color: rgba(244, 239, 230, 0.72);
+      border: 1px solid rgba(212, 163, 115, 0.3);
+      border-radius: 16px;
+      padding: 1.25rem 1.25rem 0.2rem;
+      margin-bottom: 1.45rem;
+    }
+
+    .conditional-title {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--sun-terracotta-dark);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .is-hidden {
+      display: none !important;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.95rem 1.5rem;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--sun-terracotta) 0%, var(--sun-terracotta-dark) 100%);
+      color: #ffffff;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(212, 163, 115, 0.32);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      opacity: 0.94;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .prefill-check-wrap {
+      text-align: center;
+      margin-top: 0.9rem;
+    }
+
+    .btn-link-muted {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.8rem;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      cursor: pointer;
+    }
+
+    .btn-link-muted:hover {
+      color: var(--text-ink);
+    }
+
+    .status-hint {
+      text-align: center;
+      color: #c86d51;
+      font-size: 0.86rem;
+      margin-top: 0.75rem;
+    }
+
+    /* 提交成功畫面 */
+    .success-box {
+      text-align: center;
+      padding: 2.2rem 1rem;
+    }
+
+    .success-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: rgba(141, 163, 153, 0.18);
+      color: var(--morandi-sage-dark);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .success-box h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-ink);
+      margin-bottom: 0.65rem;
+      letter-spacing: 0.1em;
+    }
+
+    .success-box p {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-reset {
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(118, 111, 104, 0.32);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-reset:hover {
+      border-color: var(--sun-terracotta);
+      color: var(--text-ink);
+    }
+
+    /* 頁尾 */
+    footer {
+      background-color: var(--text-ink);
+      color: rgba(255, 255, 255, 0.82);
+      text-align: center;
+      padding: 3rem 1.25rem;
+    }
+
+    footer .footer-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.65rem;
+      letter-spacing: 0.2em;
+      color: var(--sun-terracotta);
+      margin-bottom: 0.35rem;
+    }
+
+    footer .footer-zh {
+      font-size: 0.92rem;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.75rem;
+    }
+
+    footer .footer-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.24em;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. 頂端固定毛玻璃質感導航列 -->
+  <header>
+    <div class="nav-container">
+      <a href="#hero" class="nav-brand">Y &amp; M · 2027.04.03</a>
+      <ul class="nav-links">
+        <li><a href="#about">關於我們</a></li>
+        <li><a href="#details">婚禮詳情</a></li>
+        <li><a href="#rsvp">出席回函</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 全螢幕封面背景 -->
+  <div id="hero" class="hero">
+    <div class="hero-content">
+      <p class="hero-subtitle">We Are Getting Married</p>
+      <h1 class="hero-names">周佑澤<span class="amp">&amp;</span>楊孟萍</h1>
+      <div class="hero-date en-font">2027 . 04 . 03</div>
+    </div>
+  </div>
+
+  <!-- 2. 關於我們 & 倒數計時器 -->
+  <section id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-en">Our Story &amp; Invitation</span>
+        <h2 class="section-title">誠摯邀請您見證我們的幸福</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <p class="invitation-prose">
+        在歲月的長河裡，我們遇見了彼此最溫柔的模樣。<br />
+        感謝一路上有您的陪伴與祝福，<br />
+        誠摯邀請您於 <span class="no-wrap" style="color: var(--text-ink); font-weight: 500;">2027年4月3日</span> 蒞臨，<br />
+        與我們共同分享這份喜悅與承諾。
+      </p>
+
+      <div class="countdown-wrapper" aria-label="婚禮倒數計時器">
+        <div class="countdown-card">
+          <span id="cd-days" class="countdown-num">000</span>
+          <span class="countdown-hairline"></span>
+          <span class="countdown-unit">Days · 天</span>
+        </div>
+        <div class="countdown-card">
+          <span id="cd-hours" class="countdown-num">00</span>
+          <span class="countdown-hairline"></span>
+          <span class="countdown-unit">Hours · 時</span>
+        </div>
+        <div class="countdown-card">
+          <span id="cd-minutes" class="countdown-num">00</span>
+          <span class="countdown-hairline"></span>
+          <span class="countdown-unit">Mins · 分</span>
+        </div>
+        <div class="countdown-card">
+          <span id="cd-seconds" class="countdown-num">00</span>
+          <span class="countdown-hairline"></span>
+          <span class="countdown-unit">Secs · 秒</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 婚禮詳情：垂直 V-Card 與獨立摺疊交通面板 -->
+  <section id="details">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-en">Wedding Details</span>
+        <h2 class="section-title">婚禮儀式與晚宴</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="vcard-stack">
+        <!-- 教會儀式群組 -->
+        <div class="vcard-group">
+          <div class="vcard">
+            <span class="vcard-badge badge-church">Part I · 教會證婚</span>
+            <h3 class="vcard-title">教會儀式</h3>
+            <div class="vcard-meta">
+              <p><strong>日期：</strong><span class="no-wrap">2027年4月3日（星期六）</span></p>
+              <p><strong>時間：</strong><span class="no-wrap">13:30 入席</span> ｜ <span class="no-wrap">14:00 儀式開始</span></p>
+              <p><strong>地點：</strong><span class="no-wrap">桃園市龜山區陸光路82號</span></p>
+            </div>
+            <a href="https://maps.google.com/?q=桃園市龜山區陸光路82號" target="_blank" rel="noopener noreferrer" class="map-link">
+              開啟 Google 地圖導航
+            </a>
+          </div>
+
+          <div class="accordion-item" id="acc-church">
+            <button type="button" class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion('acc-church', this)">
+              <span>教會交通指引 Traffic Guide</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <div class="accordion-body">
+                  <p><strong>自行開車：</strong>國道一號下 <span class="no-wrap">林口交流道</span> 或 <span class="no-wrap">桃園交流道</span>，往龜山方向行駛至 <span class="no-wrap">陸光路82號</span>，周邊設有路邊停車格及鄰近收費停車場。</p>
+                  <p><strong>大眾運輸：</strong>可搭乘公車至 <span class="no-wrap">陸光二村站</span> 或 <span class="no-wrap">龜山農會站</span>，下車後步行約 3–5 分鐘即可抵達。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 婚禮晚宴群組 -->
+        <div class="vcard-group">
+          <div class="vcard">
+            <span class="vcard-badge badge-banquet">Part II · 幸福晚宴</span>
+            <h3 class="vcard-title">婚禮晚宴</h3>
+            <div class="vcard-meta">
+              <p><strong>日期：</strong><span class="no-wrap">2027年4月3日（星期六）</span></p>
+              <p><strong>時間：</strong><span class="no-wrap">17:00 入席</span> ｜ <span class="no-wrap">18:00 準時開席</span></p>
+              <p><strong>地點：</strong><span class="no-wrap">板橋芙莉嘉</span></p>
+            </div>
+            <a href="https://maps.google.com/?q=板橋芙莉嘉" target="_blank" rel="noopener noreferrer" class="map-link">
+              開啟 Google 地圖導航
+            </a>
+          </div>
+
+          <div class="accordion-item" id="acc-banquet">
+            <button type="button" class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion('acc-banquet', this)">
+              <span>晚宴交通指引 Traffic Guide</span>
+              <span class="accordion-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <div class="accordion-body">
+                  <p><strong>捷運 / 火車 / 高鐵：</strong>搭乘至 <span class="no-wrap">捷運板橋站</span> 或 <span class="no-wrap">捷運府中站</span>，出站後步行或轉乘計程車約 5–8 分鐘即可抵達 <span class="no-wrap">板橋芙莉嘉</span>。</p>
+                  <p><strong>自行開車：</strong>導航設定 <span class="no-wrap">板橋芙莉嘉</span>，會館備有特約停車場或鄰近地下收費停車場供賓客停放。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 出席回函 RSVP -->
+  <section id="rsvp">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-en">R.S.V.P</span>
+        <h2 class="section-title">婚禮出席回函</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="rsvp-card">
+        <form
+          id="rsvpForm"
+          action="https://docs.google.com/forms/d/e/1FAIpQLScjqdzPG7NOwQnF3Ysv8Vk6fwZmpkMbNs-B6uSPE_e_YKFWgw/formResponse"
+          method="POST"
+        >
+          <input type="hidden" name="fvv" value="1" />
+          <input type="hidden" name="pageHistory" value="0" />
+          <input type="hidden" name="fbzx" value="0" />
+
+          <div class="form-group">
+            <label for="entry_name" class="form-label">
+              姓名 <span class="en-sub">Name</span><span class="req-star">*</span>
+            </label>
+            <input type="text" id="entry_name" name="entry.138301856" class="form-control" required placeholder="請輸入您的真實姓名" />
+          </div>
+
+          <div class="form-group">
+            <label for="entry_email" class="form-label">
+              電子信箱 <span class="en-sub">Email</span><span class="req-star">*</span>
+            </label>
+            <input type="email" id="entry_email" name="entry.366873437" class="form-control" required placeholder="請輸入您的電子信箱" />
+          </div>
+
+          <div class="form-group">
+            <label for="entry_relation" class="form-label">
+              與新人關係 <span class="en-sub">Relationship</span><span class="req-star">*</span>
+            </label>
+            <select id="entry_relation" name="entry.979426708" class="form-control" required>
+              <option value="" disabled selected>請選擇與新人的關係</option>
+              <option value="男方親友">男方親友</option>
+              <option value="男方好友">男方好友</option>
+              <option value="男方同事夥伴">男方同事夥伴</option>
+              <option value="女方親友">女方親友</option>
+              <option value="女方好友">女方好友</option>
+              <option value="女方同事夥伴">女方同事夥伴</option>
+              <option value="教會弟兄姊妹">教會弟兄姊妹</option>
+            </select>
+          </div>
+
+          <div class="form-row-2">
+            <div>
+              <label for="entry_church_count" class="form-label">
+                參加教會儀式人數 <span class="en-sub">Ceremony Guests</span>
+              </label>
+              <input type="number" id="entry_church_count" name="entry.1540157318" class="form-control" min="0" max="20" placeholder="不參加請填 0" />
+            </div>
+
+            <div>
+              <label for="entry_banquet_count" class="form-label">
+                參加晚宴人數 <span class="en-sub">Banquet Guests</span>
+              </label>
+              <input type="number" id="entry_banquet_count" name="entry.185107229" class="form-control" min="0" max="20" placeholder="不參加請填 0" oninput="handleBanquetLogic()" />
+            </div>
+          </div>
+
+          <!-- 智能表單區塊 A：晚宴人數 > 0 時顯示 -->
+          <div id="banquet-extra-fields" class="conditional-box is-hidden">
+            <p class="conditional-title">晚宴席位與餐點需求</p>
+
+            <div class="form-group">
+              <label for="entry_diet" class="form-label">
+                飲食需求 <span class="en-sub">Dietary Preference</span>
+              </label>
+              <select id="entry_diet" name="entry.732568633" class="form-control" disabled>
+                <option value="" disabled selected>請選擇飲食習慣</option>
+                <option value="葷食">葷食</option>
+                <option value="素">素</option>
+                <option value="蛋奶素">蛋奶素</option>
+                <option value="不吃牛">不吃牛</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="entry_chair" class="form-label">
+                是否需要兒童椅 <span class="en-sub">High Chair</span>
+              </label>
+              <select id="entry_chair" name="entry.1438730250" class="form-control" disabled>
+                <option value="" disabled selected>請選擇是否需要</option>
+                <option value="不需要">不需要</option>
+                <option value="需要">需要</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="entry_invitation" class="form-label">
+              是否需要紙本喜帖 <span class="en-sub">Printed Invitation</span><span class="req-star">*</span>
+            </label>
+            <select id="entry_invitation" name="entry.1092975854" class="form-control" required onchange="handleInvitationLogic()">
+              <option value="" disabled selected>請選擇喜帖寄送需求</option>
+              <option value="需要，希望收到紙本喜帖">需要，希望收到紙本喜帖</option>
+              <option value="不需要，電子喜帖即可">不需要，電子喜帖即可</option>
+            </select>
+          </div>
+
+          <!-- 智能表單區塊 B：需要紙本喜帖時顯示 -->
+          <div id="address-extra-field" class="form-group is-hidden">
+            <label for="entry_address" class="form-label">
+              紙本喜帖寄件地址 <span class="en-sub">Mailing Address</span><span class="req-star">*</span>
+            </label>
+            <input type="text" id="entry_address" name="entry.1289570779" class="form-control" disabled placeholder="請輸入郵遞區號與完整收件地址" />
+          </div>
+
+          <div class="form-group">
+            <label for="entry_message" class="form-label">
+              給新人的祝福 <span class="en-sub">Blessings &amp; Notes</span>
+            </label>
+            <textarea id="entry_message" name="entry.2079466453" class="form-control" rows="3" placeholder="寫下想對佑澤與孟萍說的話..."></textarea>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-submit">
+            送出出席回函 · SUBMIT RSVP
+          </button>
+
+          <div class="prefill-check-wrap">
+            <button type="button" class="btn-link-muted" onclick="openGoogleFormPrefillCheck()">
+              仍未收到回覆？點此以目前填寫內容開啟 Google 表單檢視
+            </button>
+          </div>
+
+          <p id="rsvpStatusHint" class="status-hint is-hidden"></p>
+        </form>
+
+        <!-- 提交成功畫面 -->
+        <div id="rsvpSuccessBox" class="success-box is-hidden">
+          <div class="success-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3>已收到您的出席回函！</h3>
+          <p>
+            感謝您的填寫與祝福，<br />
+            <span class="no-wrap" style="color: var(--text-ink); font-weight: 500;">2027年4月3日</span> 期待與您相見！
+          </p>
+          <button type="button" class="btn-reset" onclick="resetRsvpForm()">
+            重新填寫另一份回函
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 頁尾 -->
+  <footer>
+    <p class="footer-en">Yu-Tse &amp; Meng-Ping</p>
+    <p class="footer-zh">周佑澤 &amp; 楊孟萍 婚禮邀請函</p>
+    <p class="footer-sub">2027 . 04 . 03 · Forever Begins</p>
+  </footer>
+
+  <script>
+    // 1. 婚禮倒數計時器（目標：2027/04/03 14:00:00）
+    const weddingDate = new Date('2027-04-03T14:00:00+08:00').getTime();
+
+    function updateCountdown() {
+      const now = Date.now();
+      const distance = weddingDate - now;
+
+      const daysEl = document.getElementById('cd-days');
+      const hoursEl = document.getElementById('cd-hours');
+      const minutesEl = document.getElementById('cd-minutes');
+      const secondsEl = document.getElementById('cd-seconds');
+
+      if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
+      if (distance <= 0) {
+        daysEl.textContent = '000';
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        secondsEl.textContent = '00';
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      daysEl.textContent = String(days).padStart(3, '0');
+      hoursEl.textContent = String(hours).padStart(2, '0');
+      minutesEl.textContent = String(minutes).padStart(2, '0');
+      secondsEl.textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // 2. 交通指引摺疊面板切換
+    function toggleAccordion(itemId, triggerBtn) {
+      const item = document.getElementById(itemId);
+      if (!item) return;
+      const isOpen = item.classList.toggle('is-open');
+      if (triggerBtn) {
+        triggerBtn.setAttribute('aria-expanded', String(isOpen));
+      }
+    }
+
+    // 3. 智能表單邏輯 A：晚宴人數大於 0 時顯示飲食與兒童椅選項
+    function handleBanquetLogic() {
+      const banquetInput = document.getElementById('entry_banquet_count');
+      const extraFields = document.getElementById('banquet-extra-fields');
+      const dietSelect = document.getElementById('entry_diet');
+      const chairSelect = document.getElementById('entry_chair');
+
+      const count = parseInt(banquetInput.value, 10);
+
+      if (!isNaN(count) && count > 0) {
+        extraFields.classList.remove('is-hidden');
+        dietSelect.disabled = false;
+        chairSelect.disabled = false;
+        dietSelect.setAttribute('required', 'required');
+        chairSelect.setAttribute('required', 'required');
+      } else {
+        extraFields.classList.add('is-hidden');
+        dietSelect.disabled = true;
+        chairSelect.disabled = true;
+        dietSelect.removeAttribute('required');
+        chairSelect.removeAttribute('required');
+        dietSelect.value = '';
+        chairSelect.value = '';
+      }
+    }
+
+    // 4. 智能表單邏輯 B：需要紙本喜帖時顯示寄件地址
+    function handleInvitationLogic() {
+      const invitationSelect = document.getElementById('entry_invitation');
+      const addressField = document.getElementById('address-extra-field');
+      const addressInput = document.getElementById('entry_address');
+
+      if (!invitationSelect || !addressField || !addressInput) return;
+
+      const needsPaper = invitationSelect.value.startsWith('需要');
+
+      if (needsPaper) {
+        addressField.classList.remove('is-hidden');
+        addressInput.disabled = false;
+        addressInput.setAttribute('required', 'required');
+      } else {
+        addressField.classList.add('is-hidden');
+        addressInput.disabled = true;
+        addressInput.removeAttribute('required');
+        addressInput.value = '';
+      }
+    }
+
+    // 5. 表單送出處理（透過 fetch no-cors 傳送給 Google Form）
+    let isSubmitting = false;
+    const rsvpForm = document.getElementById('rsvpForm');
+    const successBox = document.getElementById('rsvpSuccessBox');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusHint = document.getElementById('rsvpStatusHint');
+
+    rsvpForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      if (isSubmitting) return;
+
+      isSubmitting = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = '資料傳送中...';
+      if (statusHint) {
+        statusHint.classList.add('is-hidden');
+        statusHint.textContent = '';
+      }
+
+      try {
+        const payload = new URLSearchParams();
+        const elements = rsvpForm.querySelectorAll('input[name], select[name], textarea[name]');
+        elements.forEach((el) => {
+          if (el.disabled || !el.name) return;
+          if (el.value !== '') {
+            payload.append(el.name, el.value);
+          }
+        });
+
+        if (!payload.has('draftResponse')) {
+          payload.append('draftResponse', '[null,null,"0"]');
+        }
+
+        await fetch(rsvpForm.action, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: payload.toString()
+        });
+
+        rsvpForm.classList.add('is-hidden');
+        successBox.classList.remove('is-hidden');
+      } catch (err) {
+        if (statusHint) {
+          statusHint.textContent = '傳送時發生網路異常，請稍後再試一次。';
+          statusHint.classList.remove('is-hidden');
+        }
+      } finally {
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = '送出出席回函 · SUBMIT RSVP';
+      }
+    });
+
+    // 6. 重設表單
+    function resetRsvpForm() {
+      rsvpForm.reset();
+      handleBanquetLogic();
+      handleInvitationLogic();
+      if (statusHint) {
+        statusHint.classList.add('is-hidden');
+        statusHint.textContent = '';
+      }
+      successBox.classList.add('is-hidden');
+      rsvpForm.classList.remove('is-hidden');
+    }
+
+    // 7. Google 表單預填網址檢視輔助
+    function openGoogleFormPrefillCheck() {
+      try {
+        const params = new URLSearchParams();
+        params.append('usp', 'pp_url');
+
+        const elements = rsvpForm.querySelectorAll('input[name^="entry."], select[name^="entry."], textarea[name^="entry."]');
+        elements.forEach((el) => {
+          if (el.disabled || !el.name || el.value === '') return;
+          params.append(el.name, el.value);
+        });
+
+        const viewFormUrl =
+          'https://docs.google.com/forms/d/e/1FAIpQLScjqdzPG7NOwQnF3Ysv8Vk6fwZmpkMbNs-B6uSPE_e_YKFWgw/viewform?' +
+          params.toString();
+        window.open(viewFormUrl, '_blank', 'noopener,noreferrer');
+      } catch (e) {
+        if (statusHint) {
+          statusHint.textContent = '無法開啟檢視視窗，請檢查瀏覽器彈出視窗設定。';
+          statusHint.classList.remove('is-hidden');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
