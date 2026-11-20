@@ -244,8 +244,24 @@
       max-width: 600px;
       margin: 0 auto 3.2rem;
       color: var(--text-muted);
-      font-size: 1.02rem;
-      line-height: 2.1;
+      font-size: clamp(0.9rem, 3.7vw, 1.02rem);
+      line-height: 2.15;
+      letter-spacing: 0.04em;
+    }
+
+    .invitation-prose .prose-line {
+      display: block;
+    }
+
+    @media (max-width: 480px) {
+      .invitation-prose {
+        letter-spacing: 0.01em;
+        line-height: 2.1;
+      }
+      .invitation-prose .phrase {
+        display: inline-block;
+        white-space: nowrap;
+      }
     }
 
     .countdown-wrapper {
@@ -714,12 +730,20 @@
         <div class="section-divider"></div>
       </div>
 
-      <p class="invitation-prose">
-        在時光的溫柔流轉裡，我們遇見了彼此最契合的模樣。<br />
-        謹定於 <span class="no-wrap">2027年4月3日</span>（星期六），舉行我們的婚禮。<br />
-        誠摯邀請生命中重要的您，親臨見證這份喜悅與承諾，<br />
-        與我們共享暖陽般的祝福時刻。
-      </p>
+      <div class="invitation-prose">
+        <p class="prose-line">
+          <span class="phrase">在時光的溫柔流轉裡，</span><span class="phrase">我們遇見了彼此最契合的模樣。</span>
+        </p>
+        <p class="prose-line">
+          <span class="phrase">謹定於 <span class="no-wrap">2027年4月3日</span>（星期六），</span><span class="phrase">舉行我們的婚禮。</span>
+        </p>
+        <p class="prose-line">
+          <span class="phrase">誠摯邀請生命中重要的您，</span><span class="phrase">親臨見證這份喜悅與承諾，</span>
+        </p>
+        <p class="prose-line">
+          <span class="phrase">與我們共享暖陽般的祝福時刻。</span>
+        </p>
+      </div>
 
       <div class="countdown-wrapper" aria-label="婚禮倒數計時">
         <div class="countdown-card">
